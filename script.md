@@ -78,3 +78,30 @@ We can also browse to the endpoint and see that we get a login page. After loggi
 Note:
 By default, Spring security uses basic authentication. It is automatically added to all calls of the domain where the user logged on.
 
+## Posting data
+Let's add a pet to see if we can see any pets on screen
+
+```
+curl -i -X POST http://localhost:8080/pets -d '{"name": "Dog"}' -H "Content-Type:application/json" -u user:{password}
+```
+
+Does not work, why!?. After some googling, we find that csrf is blocking our way. Let's disable it:
+
+SecurityConfig.java
+```java
+@Configuration
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        super.configure(http);
+        http.csrf().disable();
+    }
+
+}
+```
+
+It works now!
+```
+curl -i -X POST http://localhost:8080/pets -d '{"name": "Dog"}' -H "Content-Type:application/json" -u user:{password}
+```
