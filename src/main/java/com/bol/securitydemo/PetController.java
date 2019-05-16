@@ -41,4 +41,9 @@ public class PetController {
         pets.put(pet.id, pet);
         return pet;
     }
+
+    @PostMapping("/kill")
+    public void killAllPets() {
+        pets.clear();
+    }
 }

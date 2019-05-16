@@ -105,3 +105,25 @@ It works now!
 ```
 curl -i -X POST http://localhost:8080/pets -d '{"name": "Dog"}' -H "Content-Type:application/json" -u user:{password}
 ```
+
+## Enter CSRF
+
+The user of our application had an issue with his Pet store, and had to put all pets down. We create a new endpoint to facilitate this.
+This seems like an endpoint that needs to be protected, but hey, we're using authentication. No problem.
+
+Right!?
+
+Let's navigate to localhost:8080/pets and take a look at our cute pets.
+A coworker sends a cool link to pictures of kittens, let's take a look.
+
+Browser: file://{dev-folder}/kittens.html
+
+Awesome. kittens.
+
+We take another look at our own pets, just checking if they're okay. We messed up, they are all dead.
+
+How is this possible? How could another website know our credentials? The other website did not know, the browser knew.
+If we take a look at kittens.html, we can see that the page hides a form that submits to an iframe on load. The target is our genocidal api.
+
+The browser recognizes that the credentials of our api should be used, because you logged on earlier. Any other website can hijack the stored credentials to make an api call.
+
